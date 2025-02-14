@@ -1,0 +1,121 @@
+---
+title: "Sleep Analysis"
+output: html_document
+date: "2024-08-03"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+############################
+## Introduction ##
+############################
+
+# This is  a sample starter script and to use R 
+
+#Installing and loading the tidyverse
+install.packages('tidyverse')
+```{r load the tidyverse}
+library(tidyverse)
+```
+#####################
+## Loading The CSV files ##
+#####################
+
+# Creating a dataframe and named it 'daily_activity' 
+
+```{r load the csv files}
+
+daily_activity <- read.csv("C:\\Users\\Anjali\\OneDrive\\文档\\archive2\\mturkfitbit_export_3.12.16-4.11.16\\Fitabase Data 3.12.16-4.11.16\\dailyActivity_merged.csv")
+```
+
+# Creating another dataframe for the sleep data. 
+```{r load another file} 
+sleep_day <- read.csv("C:\\Users\\Anjali\\OneDrive\\文档\\archive2\\mturkfitbit_export_4.12.16-5.12.16\\Fitabase Data 4.12.16-5.12.16\\sleepDay_merged.csv")
+```
+#########################
+## Exploring a few key tables ##
+#########################
+
+# Daily_activity data.
+```{r }
+head(daily_activity)
+```
+
+# Identifing all the columns in the daily_activity data.
+```{r}
+colnames(daily_activity)
+```
+
+# The sleep_day data.
+```{r}
+head(sleep_day)
+```
+
+# Identifing all the columns in the sleep_day data.
+```{r}
+colnames(sleep_day)
+```
+
+#####################################
+## Understanding some summary statistics ##
+#####################################
+
+
+```{r}
+n_distinct(daily_activity$Id)
+n_distinct(sleep_day$Id)
+```
+
+# Observations on data
+```{r}
+nrow(daily_activity)
+nrow(sleep_day)
+```
+  
+# For the daily activity dataframe:
+```{r}
+daily_activity %>%  
+  select(TotalSteps,
+         TotalDistance,
+         SedentaryMinutes) %>%
+  summary()
+```
+
+# For the sleep dataframe:
+```{r}
+sleep_day %>%  
+  select(TotalSleepRecords,
+         TotalMinutesAsleep,
+         TotalTimeInBed) %>%
+  summary()
+```
+
+
+##########################
+## Plotting a few explorations ##
+##########################
+
+
+```{r}
+ggplot(data=daily_activity, aes(x=TotalSteps, y=SedentaryMinutes)) + geom_point()
+```
+
+```{r}
+
+ggplot(data=sleep_day, aes(x=TotalMinutesAsleep, y=TotalTimeInBed)) + geom_point()
+```
+
+
+  
+##################################
+## Merging these two datasets together ##
+##################################
+```{r}
+combined_data <- merge(sleep_day, daily_activity, by="Id")
+```
+# The no of participates are: 24 According to observation
+
+```{r}
+n_distinct(combined_data$Id)
+```
